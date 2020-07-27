@@ -1,10 +1,8 @@
 import { Telegraf, session, Stage, Extra } from "telegraf";
 import Scene from "telegraf/scenes/base";
 import fs from "fs";
+import messagesReply from "../messagesReply";
 import config from "../config.json";
-
-const bot = new Telegraf(config.TOKEN);
-bot.start((ctx) => ctx.reply("Welcome"));
 
 const issue = new Scene("issue");
 issue.enter((ctx) =>
@@ -17,7 +15,7 @@ issue.on("text", async (ctx) => {
     ctx.message.message_id
   );
 
-  await ctx.reply(
+  return ctx.reply(
     "Thanks! I will send it to dev team. Also, I can subscribe to you to Robonomics newslettes, if you agree and will provide your email address.",
     Extra.HTML().markup((m) =>
       m.inlineKeyboard([
@@ -29,24 +27,40 @@ issue.on("text", async (ctx) => {
 });
 issue.action("agree", async (ctx) => {
   await ctx.answerCbQuery();
-  ctx.scene.enter("email");
+  await ctx.scene.enter("email");
 });
 issue.action("no", async (ctx) => {
   await ctx.answerCbQuery();
-  ctx.reply("Ok.");
-  ctx.scene.leave();
+  await ctx.reply("Ok.");
+  await ctx.scene.leave();
 });
 
 const email = new Scene("email");
 email.enter((ctx) => ctx.reply("And your email, please"));
-email.hears(/\S+@\S+\.\S+/, (ctx) => {
+email.hears(/\S+@\S+\.\S+/, async (ctx) => {
   fs.appendFileSync("./files/list.txt", ctx.message.text + "\n");
-  ctx.reply("Ok, added.");
-  ctx.scene.leave();
+  await ctx.reply("Ok, added.");
+  return ctx.scene.leave();
 });
 email.on("message", (ctx) => ctx.reply("Invalid email"));
 
-const stage = new Stage([issue, email], { ttl: 10 });
+const bot = new Telegraf(config.TOKEN);
+bot.start((ctx) => ctx.reply("Welcome"));
+
+const words = Object.keys(messagesReply);
+bot.on("text", async (ctx, next) => {
+  const i = words.findIndex((item) => {
+    return ctx.message.text.search(new RegExp(item, "i")) >= 0;
+  });
+  if (i >= 0) {
+    await ctx.replyWithMarkdown(messagesReply[words[i]], {
+      reply_to_message_id: ctx.message.message_id,
+    });
+  }
+  return next();
+});
+
+const stage = new Stage([issue, email], { ttl: 200 });
 bot.use(session());
 bot.use(stage.middleware());
 bot.command("issue", (ctx) => ctx.scene.enter("issue"));

@@ -12,6 +12,8 @@ module.exports = {
   
   "cap": `Community! price, circ, cap discussion here [Trade XRT](https://t.me/joinchat/A6wE1FiSPStvVN4MKmZDyg)`,
   
+  "trading": `Community! price, circ, cap discussion here [Trade XRT](https://t.me/joinchat/A6wE1FiSPStvVN4MKmZDyg)`,
+  
   "roadmap": `The information about following topics #roadmap, #parachain, #Kusama, #Polkadot are in the recommended sequence:
 
 1. [Infrastructure && tech development timeline](https://robonomics.network/timeline)

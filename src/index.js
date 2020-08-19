@@ -48,8 +48,8 @@ const bot = new Telegraf(config.TOKEN);
 bot.start((ctx) => ctx.reply("Welcome"));
 
 const dict = messagesReply.reduce((accumulator, item, index) => {
-  item.words.forEach(word => {
-    accumulator[word] = index
+  item.words.forEach((word) => {
+    accumulator[word] = index;
   });
   return accumulator;
 }, {});
@@ -73,12 +73,12 @@ bot.use(session());
 bot.use(stage.middleware());
 bot.command("issue", (ctx) => ctx.scene.enter("issue"));
 
-bot.on("new_chat_members", (ctx) => {
-  let members = "";
-  ctx.message.new_chat_members.forEach((member) => {
-    members += "@" + member.username + " ";
-  });
-  ctx.reply(members + "привет");
-});
+// bot.on("new_chat_members", (ctx) => {
+//   let members = "";
+//   ctx.message.new_chat_members.forEach((member) => {
+//     members += "@" + member.username + " ";
+//   });
+//   ctx.reply(members + "привет");
+// });
 
 bot.launch();

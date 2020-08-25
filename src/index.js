@@ -1,4 +1,4 @@
-import { Telegraf, session, Stage, Extra } from "telegraf";
+import { Telegraf, session, Stage, Extra, Markup } from "telegraf";
 import Scene from "telegraf/scenes/base";
 import fs from "fs";
 import messagesReply from "../messagesReply";
@@ -57,12 +57,42 @@ const words = Object.keys(dict);
 
 bot.on("text", async (ctx, next) => {
   // console.log(ctx.update, ctx.botInfo);
+  if (ctx.message.chat.type === "group") {
+    const admins = await ctx.telegram.getChatAdministrators(
+      ctx.message.chat.id
+    );
+    const is = admins.find((item) => {
+      return item.user.id === ctx.message.from.id;
+    });
+    if (is) {
+      return next();
+    }
+  }
   const i = words.findIndex((item) => {
     return ctx.message.text.search(new RegExp(item, "i")) >= 0;
   });
   if (i >= 0) {
     await ctx.replyWithMarkdown(messagesReply[dict[words[i]]].message, {
       reply_to_message_id: ctx.message.message_id,
+
+      reply_markup: Markup.inlineKeyboard([
+        [
+          Markup.urlButton(
+            "Uniswap",
+            "https://uniswap.info/pair/0x3185626c14acb9531d19560decb9d3e5e80681b1"
+          ),
+          Markup.urlButton(
+            "Coingecko",
+            "https://www.coingecko.com/en/coins/robonomics-network"
+          ),
+        ],
+        [
+          Markup.urlButton(
+            "Contract",
+            "https://etherscan.io/token/0x7de91b204c1c737bcee6f000aaa6569cf7061cb7"
+          ),
+        ],
+      ]),
     });
   }
   return next();

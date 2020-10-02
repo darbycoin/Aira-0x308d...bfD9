@@ -57,7 +57,10 @@ const words = Object.keys(dict);
 
 bot.on("text", async (ctx, next) => {
   // console.log(ctx.update, ctx.botInfo);
-  if (ctx.message.chat.type === "group") {
+  if (
+    ctx.message.chat.type === "group" &&
+    ctx.message.chat.type === "supergroup"
+  ) {
     const admins = await ctx.telegram.getChatAdministrators(
       ctx.message.chat.id
     );

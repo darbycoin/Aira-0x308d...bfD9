@@ -1,7 +1,7 @@
 module.exports = [
   {
-    words: ['tokenomics'],
-    message: `The information about following topics #tokenomics are in the recommended sequence:
+    words: ['jetons'],
+    message: `Pour s'avoir davantage les details du tokenomics, on vous suggere de commencer ici:
 
 1. [Infrastructure && tech development timeline](https://robonomics.network/timeline)
 2. [Foundation of the Robonomics parachain](https://blog.aira.life/foundation-of-the-robonomics-parachain-390dfac09e5d)
@@ -10,11 +10,11 @@ module.exports = [
   },
   {
     words: ['circ','price','cap', 'trading'],
-    message: `Community! price, circ, cap discussion here [Trade XRT](https://t.me/joinchat/A6wE1FiSPStvVN4MKmZDyg)`
+    message: `Joignez notre trading groupe pour en discutez plus! [Trade XRT](https://t.me/joinchat/A6wE1FiSPStvVN4MKmZDyg)`
   },
   {
     words: ['roadmap','parachain','Kusama', 'Polkadot', 'plans'],
-    message: `The information about following topics #roadmap, #parachain, #Kusama, #Polkadot are in the recommended sequence:
+    message: `Salut! Vous trouvera ces informations ici :) :
 
 1. [Infrastructure && tech development timeline](https://robonomics.network/timeline)
 2. [On top of two world computers. Research questions](https://blog.aira.life/on-top-of-two-world-computers-research-questions-a83570f4c8b1)
